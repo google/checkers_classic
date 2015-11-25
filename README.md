@@ -5,7 +5,7 @@ Checkers is released under the Apache 2.0 license.  See the LICENSE file for det
 
 Checkers is a python unit test framework for defining data-driven tests.
 
-Contributions are not being accepted for this code as there are significant updates with non-backwards-compatible changes in the release pipeline which will bring new features to the framework.  Even fundamentals such as the way tests are defined will change.  Because of this, if you wish to use this package it is strongly recommended that you fork this repository.
+Contributions are not being accepted for this code as there are significant updates with non-backwards-compatible changes in the release pipeline which will bring new features to the framework.  Even fundamentals such as the way tests are defined will change.  Because of this, if you wish to use this package it is strongly recommended that you fork this repository.  For a preview, check out google/checkers on GitHub.
 
 Checkers builds on top of the standard python unittest module.  It also includes the assertions from the python Hamcrest library.
 
