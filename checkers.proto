@@ -1,0 +1,119 @@
+// Copyright 2015 Google Inc. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+//     Unless required by applicable law or agreed to in writing, software
+//     distributed under the License is distributed on an "AS IS" BASIS,
+//     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//     See the License for the specific language governing permissions and
+//     limitations under the License.
+
+syntax = "proto2";
+
+package checkers;
+
+message ComponentMap {
+  optional string component_name = 1;
+  optional string registry_id = 2;
+}
+
+message TestData {
+
+  enum Type {
+    PROTO = 0;
+    VARIABLE = 1;
+    BOOL = 2;
+    STRING = 3;
+    SHORT = 4;
+    INTEGER = 5;
+    LONG = 6;
+    DECIMAL = 7;
+    FLOAT = 8;
+  }
+
+  // Template that describes a TestData object. When this template gets resolved
+  // with a TestData message, the type should be checked to make sure it matches
+  // one of the supported types listed here (this gives Checkers something that
+  // looks like type safety in languages like Python that don't support it.
+  message Template {
+    optional string name = 1;
+    repeated Type type = 2;
+    optional string default_value = 3;
+    optional string description = 4;
+  }
+
+  optional string name = 1;
+  optional Type type = 2;
+  optional string value = 3;
+}
+
+// This method gives enough information to find the Python callable that
+// can execute the test step or test case.
+// The module_path field is only needed if the module containing the callable
+// hasn't been loaded already. It gives Checkers the path to the source file so
+// that it can be loaded dynamically.
+message PythonImplementation {
+  optional string template_name = 1;
+  optional string module_name = 2;
+  optional string module_path = 3;
+}
+
+// The Implementations proto contains all of the information necessary to
+// execute the test step or test case in some environment. An implementation's
+// "manual" value is just a text blob explaining how to execute the test. Beyond
+// that, there is a repeated field for implementations in each supported
+// language.
+message Implementation {
+  optional string manual = 1;
+  repeated PythonImplementation python = 2;
+}
+
+message TestStep {
+
+  message Template {
+  }
+
+  optional string name = 1;
+  optional string description = 2;
+  repeated ComponentMap component_map = 3;
+  repeated TestData input = 4;
+  repeated TestData output = 5;
+  repeated TestStep test_step = 6;
+  optional Implementation implementation = 7;
+}
+
+message TestCase {
+
+  message Template {
+  }
+
+  optional string name = 1;
+  optional string description = 2;
+  repeated ComponentMap component_map = 3;
+  repeated TestData data = 4;
+  repeated TestStep test_step = 5;
+  optional Implementation implementation = 6;
+}
+
+message TestSuite {
+
+  message Template {
+  }
+
+  optional string name = 1;
+  optional string description = 2;
+  repeated TestCase test_case = 3;
+}
+
+message TestRun {
+
+  message Template {
+  }
+
+  optional string name = 1;
+  optional string description = 2;
+}
